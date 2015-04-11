@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+<p>Diff (fake)
+  <form action="{{ url_for('add') }}" method=post class=add-entry>
+    <dl>
+      <dt>Input:
+      <dd><input type=text size=30 name=title>
+      <dd><input type=submit value=Add>
+    </dl>
+  </form>
+{% endblock %}
+

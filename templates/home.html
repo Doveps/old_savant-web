@@ -6,7 +6,7 @@
     <li><h2>{{ diff.uuid }}</h2>
   {% else %}
     <li><em>No diffs pending at the moment. Use bassist to add some.</em>
-    <li><a href="{{ url_for('diff') }}">fake</a>
+    <li><a href="{{ url_for('diff', uuid='abc') }}">fake</a>
   {% endfor %}
   </ul>
 {% endblock %}

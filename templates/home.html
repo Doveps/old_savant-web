@@ -3,10 +3,9 @@
 <p>Use this interface to view and assign diffs. The following diffs are pending assignment:
   <ul class=entries>
   {% for diff in diffs %}
-    <li><h2>{{ diff.uuid }}</h2>
+    <li><a href="{{ url_for('diff', id=diff) }}">{{ diff }}</a>
   {% else %}
     <li><em>No diffs pending at the moment. Use bassist to add some.</em>
-    <li><a href="{{ url_for('diff', uuid='abc') }}">fake</a>
   {% endfor %}
   </ul>
 {% endblock %}

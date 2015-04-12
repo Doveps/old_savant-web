@@ -5,6 +5,8 @@ from flask import Flask, g, redirect, url_for, render_template, flash, request
 
 from savant.inferences import db
 
+import forms
+
 # configuration
 DEBUG = True
 SECRET_KEY = 'development key'
@@ -22,11 +24,13 @@ def home():
 
 @app.route('/diff/<id>')
 def diff(id=None):
-    return render_template('diff.html', id=id)
+    form = forms.DiffForm()
+    return render_template('diff.html', id=id, form=form)
 
 @app.route('/add', methods=['POST'])
 def add():
-    flash('New set added using diff')
+    form = forms.DiffForm(request.form)
+    flash('New set added using diff, data %s'%form.testfield.data)
     return redirect(url_for('diff', id=request.form['id']))
 
 if __name__ == '__main__':

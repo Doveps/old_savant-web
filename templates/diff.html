@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
 {% block body %}
   <p>Assign at least one diff to a new or existing set.
   <form action="{{ url_for('add') }}" method=post class=add-entry>
     <input type=hidden name=id value={{ id }}>
     <dl>
-      <dt>Input:
-      <dd><input type=text size=30 name=title>
+      {{ render_field(form.testfield) }}
       <dd><input type=submit value=Add>
     </dl>
   </form>

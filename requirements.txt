@@ -1,3 +1,4 @@
 savant
 Flask
 ZODB
+WTForms

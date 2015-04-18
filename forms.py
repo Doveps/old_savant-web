@@ -1,4 +1,4 @@
-from wtforms import Form, TextField
+from wtforms import Form, SelectMultipleField
 
 class DiffForm(Form):
-    testfield = TextField('Test field')
+    diffs = SelectMultipleField('Diffs', choices=[])

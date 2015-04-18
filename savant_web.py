@@ -25,12 +25,24 @@ def home():
 @app.route('/diff/<id>')
 def diff(id=None):
     form = forms.DiffForm()
+    form.diffs.choices = [
+        ('groups', 'groups'),
+        ('add', '- add'),
+        ('ssl-cert', '--- ssl-cert (0)'),
+        ('packages', 'packages'),
+    ]
     return render_template('diff.html', id=id, form=form)
 
 @app.route('/add', methods=['POST'])
 def add():
     form = forms.DiffForm(request.form)
-    flash('New set added using diff, data %s'%form.testfield.data)
+    form.diffs.choices = [
+        ('groups', 'groups'),
+        ('add', '- add'),
+        ('ssl-cert', '--- ssl-cert (0)'),
+        ('packages', 'packages'),
+    ]
+    flash('New set added using diff, data %s'%form.diffs.data)
     return redirect(url_for('diff', id=request.form['id']))
 
 if __name__ == '__main__':

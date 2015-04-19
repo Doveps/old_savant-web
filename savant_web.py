@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 
-from flask import Flask, g, redirect, url_for, render_template, flash, request
+from flask import Flask, g, redirect, url_for, render_template, flash, request, Markup
 
 from savant.inferences import db
 
@@ -31,7 +31,14 @@ def diff(id=None):
 def add():
     id=request.form['id']
     dform = forms.DynamicDiff(g.db, id, request)
-    flash('New set added using diff, data %s'%dform.form.diffs.data)
+    message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
+        (
+        dform.form.action.data,
+        dform.form.system.data,
+        dform.form.name.data,
+        dform.form.diffs.data
+        ))
+    flash(message)
     return redirect(url_for('diff', id=id))
 
 if __name__ == '__main__':

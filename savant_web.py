@@ -3,7 +3,8 @@ import argparse
 
 from flask import Flask, g, redirect, url_for, render_template, flash, request, Markup
 
-from savant.inferences import db
+import savant.db
+import savant.comparisons
 
 import forms
 
@@ -16,11 +17,11 @@ app.config.from_object(__name__)
 
 @app.before_request
 def before_request():
-    g.db = db.DB(args.inference_db)
+    g.db = savant.db.DB(args.inference_db)
 
 @app.route('/')
 def home():
-    return render_template('home.html', diffs=g.db.get_diffs())
+    return render_template('home.html', diffs=savant.comparisons.all(g.db))
 
 @app.route('/diff/<id>')
 def diff(id=None):

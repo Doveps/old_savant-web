@@ -1,14 +1,15 @@
-from wtforms import Form, SelectField, SelectMultipleField
+from wtforms import Form, SelectField, SelectMultipleField, validators
+
+import savant.comparisons
 
 class DiffForm(Form):
-    diffs = SelectMultipleField('Diffs', choices=[])
-    action = SelectField('Action', choices=[('', '-----'),('add', 'Adds'),('subtract', 'Subtracts')])
-    system = SelectField('System', choices=[])
-    name = SelectField('Named', choices=[])
+    diffs = SelectMultipleField('Diffs', [validators.Required()], choices=[])
+    action = SelectField('Action', [validators.Required()], choices=[('add', 'Adds'),('subtract', 'Subtracts')])
+    system = SelectField('System', [validators.Required()], choices=[])
+    name = SelectField('Named', [validators.Required()], choices=[])
 
 class DynamicDiff(object):
     def __init__(self, db, diff_id, request=None):
-        self.db = db
         self.diff_id = diff_id
 
         if request is None:
@@ -16,12 +17,12 @@ class DynamicDiff(object):
         else:
             self.form = DiffForm(request.form)
 
-        self.diff = db.dbroot['diffs'][self.diff_id]
+        self.comp = savant.comparisons.get(db, self.diff_id)
         self.diff_choices = []
-        self.system_choices = [('', '-----')]
+        self.system_choices = []
         self.name_choices = []
 
-        for system_name in sorted(self.diff.keys()):
+        for system_name in sorted(self.comp.keys()):
             self.diff_choices.append(('Isystem', system_name))
             self.system_delta('add', system_name)
             self.system_delta('subtract', system_name)
@@ -33,13 +34,12 @@ class DynamicDiff(object):
 
         self.name_choices = list(set(self.name_choices))
         self.name_choices.sort()
-        self.name_choices.insert(0, ('', '-----'))
         self.form.name.choices = self.name_choices
 
     def system_delta(self, delta_type, system_name):
-        if len(self.diff[system_name][delta_type]) == 0:
+        if len(self.comp[system_name][delta_type]) == 0:
             return
         self.diff_choices.append(('I'+delta_type, '- '+delta_type))
-        for change_instance in sorted(self.diff[system_name][delta_type].keys()):
+        for change_instance in sorted(self.comp[system_name][delta_type].keys()):
             self.diff_choices.append((system_name+'|'+delta_type+'|'+change_instance, '--- '+change_instance+' (0)'))
             self.name_choices.append((change_instance, change_instance))

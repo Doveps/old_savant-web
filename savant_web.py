@@ -5,6 +5,7 @@ from flask import Flask, g, redirect, url_for, render_template, flash, request, 
 
 import savant.db
 import savant.comparisons
+import savant.sets
 
 import forms
 
@@ -32,12 +33,14 @@ def diff(id=None):
 def add():
     id=request.form['id']
     dform = forms.DynamicDiff(g.db, id, request)
+    new_set = savant.sets.Set(g.db, dform.set_id)
+    new_set.add_data(dform.set_choices)
     message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
         (
         dform.form.action.data,
         dform.form.system.data,
         dform.form.name.data,
-        dform.form.diffs.data
+        dform.set_choices
         ))
     flash(message)
     return redirect(url_for('diff', id=id))

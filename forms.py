@@ -11,11 +11,18 @@ class DiffForm(Form):
 class DynamicDiff(object):
     def __init__(self, db, diff_id, request=None):
         self.diff_id = diff_id
+        self.set_id = None
+        self.set_choices = []
 
         if request is None:
             self.form = DiffForm()
         else:
             self.form = DiffForm(request.form)
+            self.set_id = self.form.action.data +'|'+ self.form.system.data +'|'+ self.form.name.data
+            for delta in self.form.diffs.data:
+                if delta.startswith('I'):
+                    continue
+                self.set_choices.append(delta)
 
         self.comp = savant.comparisons.get(db, self.diff_id)
         self.diff_choices = []

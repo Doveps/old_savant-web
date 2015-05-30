@@ -1,6 +1,7 @@
 from wtforms import Form, SelectField, SelectMultipleField, validators
 
 import savant.comparisons
+import savant.sets
 
 class DiffForm(Form):
     diffs = SelectMultipleField('Diffs', [validators.Required()], choices=[])
@@ -10,6 +11,7 @@ class DiffForm(Form):
 
 class DynamicDiff(object):
     def __init__(self, db, diff_id, request=None):
+        self.db = db
         self.diff_id = diff_id
         self.set_id = None
         self.set_choices = []
@@ -48,5 +50,7 @@ class DynamicDiff(object):
             return
         self.diff_choices.append(('I'+delta_type, '- '+delta_type))
         for change_instance in sorted(self.comp[system_name][delta_type].keys()):
-            self.diff_choices.append((system_name+'|'+delta_type+'|'+change_instance, '--- '+change_instance+' (0)'))
+            change_key = system_name+'|'+delta_type+'|'+change_instance
+            set_id_count = str(len(savant.sets.find(change_key, self.db)))
+            self.diff_choices.append((change_key, '--- '+change_instance+' ('+set_id_count+')'))
             self.name_choices.append((change_instance, change_instance))

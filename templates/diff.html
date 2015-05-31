@@ -2,7 +2,7 @@
 {% from "_formhelpers.html" import render_field %}
 {% block body %}
   <p>Assign at least one diff to a new or existing set.
-  <form action="{{ url_for('add') }}" method=post class=add-entry>
+  <form action="{{ url_for('diff_add') }}" method=post class=add-entry>
     <input type=hidden name=id value={{ id }}>
     <dl>
       {{ render_field(form.diffs, size=form.diffs.choices|length) }}

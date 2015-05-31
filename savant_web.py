@@ -30,6 +30,22 @@ def diff(id=None):
     dform = forms.DynamicDiff(g.db, id)
     return render_template('diff.html', id=id, form=dform.form)
 
+@app.route('/diff/add', methods=['POST'])
+def diff_add():
+    id=request.form['id']
+    dform = forms.DynamicDiff(g.db, id, request)
+    new_set = savant.sets.Set(g.db, dform.set_id)
+    new_set.add_data(dform.set_choices)
+    message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
+        (
+        dform.form.action.data,
+        dform.form.system.data,
+        dform.form.name.data,
+        str(len(dform.set_choices)),
+        ))
+    flash(message)
+    return redirect(url_for('diff', id=id))
+
 @app.route('/sets')
 def sets():
     set_ids = savant.sets.all(g.db)
@@ -80,22 +96,6 @@ def set_remove():
                 ))
     flash(message)
     return redirect(url_for('sets'))
-
-@app.route('/add', methods=['POST'])
-def add():
-    id=request.form['id']
-    dform = forms.DynamicDiff(g.db, id, request)
-    new_set = savant.sets.Set(g.db, dform.set_id)
-    new_set.add_data(dform.set_choices)
-    message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
-        (
-        dform.form.action.data,
-        dform.form.system.data,
-        dform.form.name.data,
-        dform.set_choices
-        ))
-    flash(message)
-    return redirect(url_for('diff', id=id))
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser(

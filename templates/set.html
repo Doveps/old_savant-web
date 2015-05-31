@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block body %}
+<p>Modifying set <strong>{{ res.action }} {{ res.system }}: {{ res.name }}</strong>
+  <form action="{{ url_for('set_update') }}" method=post class=add-entry>
+    <input type=hidden name=escaped_id value={{ esc }}>
+    <p>You may remove diffs from this set:
+    <dl>
+      <dd><input type=submit value="Remove Diffs From Set">
+    </dl>
+  </form>
+  <form action="{{ url_for('set_remove') }}" method=post class=add-entry>
+    <input type=hidden name=escaped_id value={{ esc }}>
+    <p>If this set is invalid, you may also remove it:
+    <dl>
+      <dd><input type=submit value="Remove Set">
+    </dl>
+  </form>
+{% endblock %}
+

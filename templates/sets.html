@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+<p>The following sets exist:
+  <ul class=entries>
+  {% for data in sets %}
+  <li>{{ data['action'] }} {{ data['system'] }}: <a href="{{ url_for('set', escaped_id=data['esc']) }}">{{ data['name'] }}</a> ({{ data['len'] }})
+  {% else %}
+    <li><em>No sets exist at the moment. Choose from the <a href="{{ url_for('home') }}">pending list</a> to add some.</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
+

@@ -83,12 +83,13 @@ def set_update():
     flash(message)
     return redirect(url_for('sets'))
 
-@app.route('/set/remove', methods=['POST'])
-def set_remove():
+@app.route('/set/delete', methods=['POST'])
+def set_delete():
     escaped_id=request.form['escaped_id']
     set_id = urllib.unquote(escaped_id)
     set_results = savant.sets.get(set_id, g.db)
-    message = Markup('Set removed: <strong>%s %s: %s</strong>' %
+    savant.sets.delete(set_id, g.db)
+    message = Markup('Set deleted: <strong>%s %s: %s</strong>' %
             (
                 set_results.action,
                 set_results.system,

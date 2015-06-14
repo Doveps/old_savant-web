@@ -77,12 +77,17 @@ def set(escaped_id=None):
 def set_update_diffs():
     escaped_id=request.form['escaped_id']
     set_id = urllib.unquote(escaped_id)
-    set_obj = savant.sets.get(set_id, g.db)
+    dform = forms.DDiffForm(g.db, set_id, request)
+    valid_choices = [tup[0] for tup in dform.form.diffs.choices]
+    for diff in dform.form.diffs.data:
+        assert diff in valid_choices
+        logging.warn('deleting diff %s',diff)
+        dform.set_obj.delete_diff(diff)
     message = Markup('Set updated: <strong>%s %s: %s</strong>' %
             (
-                set_obj.info.action,
-                set_obj.info.system,
-                set_obj.info.name
+                dform.set_obj.info.action,
+                dform.set_obj.info.system,
+                dform.set_obj.info.name
                 ))
     flash(message)
     return redirect(url_for('set', escaped_id=escaped_id))

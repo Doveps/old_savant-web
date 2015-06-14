@@ -1,3 +1,5 @@
+import logging
+
 from wtforms import Form, SelectField, SelectMultipleField, validators
 
 import savant.comparisons
@@ -14,20 +16,16 @@ class DiffNamingForm(DiffForm):
 class DDiffForm(object):
     '''This is the dynamic version of the DiffForm.'''
     def __init__(self, db, set_id, request=None):
+        self.logger = logging.getLogger(__name__ + '.' + type(self).__name__)
         self.db = db
         self.set_id = set_id
-        self.set_choices = []
 
         self.set_obj = savant.sets.get(self.set_id, self.db)
 
         if request is None:
-            self.form = DiffNamingForm()
+            self.form = DiffForm()
         else:
-            self.form = DiffNamingForm(request.form)
-            for delta in self.form.diffs.data:
-                if delta.startswith('I'):
-                    continue
-                self.set_choices.append(delta)
+            self.form = DiffForm(request.form)
 
         self.diff_choices = []
 
@@ -40,6 +38,7 @@ class DDiffForm(object):
 class DDiffNamingForm(object):
     '''This is the dynamic version of the DiffNamingForm.'''
     def __init__(self, db, diff_id, request=None):
+        self.logger = logging.getLogger(__name__ + '.' + type(self).__name__)
         self.db = db
         self.diff_id = diff_id
         self.set_id = None

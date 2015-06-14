@@ -2,6 +2,7 @@
 {% from "_formhelpers.html" import render_field %}
 {% block body %}
 <p>Modifying set <strong>{{ res.action }} {{ res.system }}: {{ res.name }}</strong>
+  {% if form.diffs.choices|length > 0 %}
   <form action="{{ url_for('set_update_diffs') }}" method=post class=add-entry>
     <input type=hidden name=escaped_id value={{ esc }}>
     <p>You may delete diffs from this set:
@@ -10,9 +11,12 @@
       <dd><input type=submit value="Delete Diffs From Set">
     </dl>
   </form>
+  {% else %}
+  <p>This set has no diffs.
+  {% endif %}
   <form action="{{ url_for('set_delete') }}" method=post class=add-entry>
     <input type=hidden name=escaped_id value={{ esc }}>
-    <p>If this set is invalid, you may also delete it:
+    <p>If this set is invalid, you may delete it:
     <dl>
       <dd><input type=submit value="Delete Set">
     </dl>

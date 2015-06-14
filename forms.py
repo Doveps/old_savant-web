@@ -5,11 +5,40 @@ import savant.sets
 
 class DiffForm(Form):
     diffs = SelectMultipleField('Diffs', [validators.Required()], choices=[])
+
+class DiffNamingForm(DiffForm):
     action = SelectField('Action', [validators.Required()], choices=[('add', 'Adds'),('subtract', 'Subtracts')])
     system = SelectField('System', [validators.Required()], choices=[])
     name = SelectField('Named', [validators.Required()], choices=[])
 
-class DynamicDiff(object):
+class DDiffForm(object):
+    '''This is the dynamic version of the DiffForm.'''
+    def __init__(self, db, set_id, request=None):
+        self.db = db
+        self.set_id = set_id
+        self.set_choices = []
+
+        self.set_obj = savant.sets.get(self.set_id, self.db)
+
+        if request is None:
+            self.form = DiffNamingForm()
+        else:
+            self.form = DiffNamingForm(request.form)
+            for delta in self.form.diffs.data:
+                if delta.startswith('I'):
+                    continue
+                self.set_choices.append(delta)
+
+        self.diff_choices = []
+
+        self.systems = {}
+        for diff in self.set_obj.get_diffs():
+            self.diff_choices.append((diff, diff))
+
+        self.form.diffs.choices = self.diff_choices
+
+class DDiffNamingForm(object):
+    '''This is the dynamic version of the DiffNamingForm.'''
     def __init__(self, db, diff_id, request=None):
         self.db = db
         self.diff_id = diff_id
@@ -17,9 +46,9 @@ class DynamicDiff(object):
         self.set_choices = []
 
         if request is None:
-            self.form = DiffForm()
+            self.form = DiffNamingForm()
         else:
-            self.form = DiffForm(request.form)
+            self.form = DiffNamingForm(request.form)
             self.set_id = self.form.action.data +'|'+ self.form.system.data +'|'+ self.form.name.data
             for delta in self.form.diffs.data:
                 if delta.startswith('I'):

@@ -4,6 +4,7 @@ from wtforms import Form, SelectField, SelectMultipleField, validators
 
 import savant.comparisons
 import savant.sets
+import savant.diffs
 
 class DiffForm(Form):
     diffs = SelectMultipleField('Diffs', [validators.Required()], choices=[])
@@ -13,34 +14,63 @@ class DiffNamingForm(DiffForm):
     system = SelectField('System', [validators.Required()], choices=[])
     name = SelectField('Named', [validators.Required()], choices=[])
 
-class DDiffForm(object):
+class DDiffBase(object):
+    '''Shared methods for DDiff Forms.'''
+    def get_diff_choices(self, diff_ids):
+        diff_choices = []
+
+        prev_system = ''
+        prev_action = ''
+        for id in sorted(diff_ids):
+            diff = savant.diffs.Diff(id)
+
+            if diff.system != prev_system:
+                diff_choices.append(('Isystem', diff.system))
+                prev_system = diff.system
+                prev_action = ''
+
+            if diff.action != prev_action:
+                diff_choices.append(('I'+diff.action, '- '+diff.action))
+                prev_action = diff.action
+
+            set_id_count = str(len(savant.sets.find_with_diff(diff, self.db)))
+            diff_choices.append(
+                    (diff.id, '--- '+diff.name+' ('+set_id_count+')'))
+
+        return(diff_choices)
+
+    def get_valid_choices(self, given_choices):
+        choices = []
+        for diff in given_choices:
+            if diff.startswith('I'):
+                continue
+            choices.append(diff)
+        return choices
+
+class DDiffForm(DDiffBase):
     '''This is the dynamic version of the DiffForm.'''
     def __init__(self, db, set_id, request=None):
         self.logger = logging.getLogger(__name__ + '.' + type(self).__name__)
         self.db = db
         self.set_id = set_id
 
-        self.set_obj = savant.sets.get(self.set_id, self.db)
+        self.set_obj = savant.sets.Set(self.db, self.set_id)
+        self.delete_diffs = []
 
         if request is None:
             self.form = DiffForm()
         else:
             self.form = DiffForm(request.form)
+            self.delete_diffs = self.get_valid_choices(self.form.diffs.data)
 
-        self.diff_choices = []
+        self.form.diffs.choices = self.get_diff_choices(self.set_obj.get_diff_ids())
 
-        self.systems = {}
-        for diff in self.set_obj.get_diffs():
-            self.diff_choices.append((diff, diff))
-
-        self.form.diffs.choices = self.diff_choices
-
-class DDiffNamingForm(object):
+class DDiffNamingForm(DDiffBase):
     '''This is the dynamic version of the DiffNamingForm.'''
-    def __init__(self, db, diff_id, request=None):
+    def __init__(self, db, comparison_id, request=None):
         self.logger = logging.getLogger(__name__ + '.' + type(self).__name__)
         self.db = db
-        self.diff_id = diff_id
+        self.comparison_id = comparison_id
         self.set_id = None
         self.set_choices = []
 
@@ -49,36 +79,25 @@ class DDiffNamingForm(object):
         else:
             self.form = DiffNamingForm(request.form)
             self.set_id = self.form.action.data +'|'+ self.form.system.data +'|'+ self.form.name.data
-            for delta in self.form.diffs.data:
-                if delta.startswith('I'):
-                    continue
-                self.set_choices.append(delta)
+            self.set_choices = self.get_valid_choices(self.form.diffs.data)
 
-        self.comp = savant.comparisons.get(db, self.diff_id)
-        self.diff_choices = []
+        comparison = savant.comparisons.Comparison(db, id=comparison_id)
+        self.form.diffs.choices = self.get_diff_choices(comparison.get_diff_ids())
+        self.form.name.choices = self.get_name_choices()
+
         self.system_choices = []
-        self.name_choices = []
-
-        for system_name in sorted(self.comp.keys()):
-            self.diff_choices.append(('Isystem', system_name))
-            self.system_delta('add', system_name)
-            self.system_delta('subtract', system_name)
-
+        for system_name in sorted(comparison.get_systems()):
             self.system_choices.append((system_name, system_name.capitalize()))
-
-        self.form.diffs.choices = self.diff_choices
         self.form.system.choices = self.system_choices
 
-        self.name_choices = list(set(self.name_choices))
-        self.name_choices.sort()
-        self.form.name.choices = self.name_choices
+    def get_name_choices(self):
+        '''Get name options based on the diff choice names set in this form.'''
+        name_choices = []
 
-    def system_delta(self, delta_type, system_name):
-        if len(self.comp[system_name][delta_type]) == 0:
-            return
-        self.diff_choices.append(('I'+delta_type, '- '+delta_type))
-        for change_instance in sorted(self.comp[system_name][delta_type].keys()):
-            change_key = system_name+'|'+delta_type+'|'+change_instance
-            set_id_count = str(len(savant.sets.find(change_key, self.db)))
-            self.diff_choices.append((change_key, '--- '+change_instance+' ('+set_id_count+')'))
-            self.name_choices.append((change_instance, change_instance))
+        for choice in self.form.diffs.choices:
+            if choice[0].startswith('I'):
+                continue
+            diff = savant.diffs.Diff(choice[0])
+            name_choices.append((diff.name, diff.name))
+
+        return sorted(list(set(name_choices)))

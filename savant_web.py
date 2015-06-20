@@ -8,6 +8,7 @@ from flask import Flask, g, redirect, url_for, render_template, flash, request, 
 
 import savant.db
 import savant.comparisons
+import savant.diffs
 import savant.sets
 
 import forms
@@ -39,7 +40,7 @@ def sets():
     set_ids = savant.sets.all(g.db)
     sets = []
     for set_id in set_ids:
-        set_obj = savant.sets.get(set_id, g.db)
+        set_obj = savant.sets.Set(g.db, set_id)
         data = {
                 'id': set_id,
                 'esc': urllib.quote(set_id, ''),
@@ -78,11 +79,9 @@ def set_update_diffs():
     escaped_id=request.form['escaped_id']
     set_id = urllib.unquote(escaped_id)
     dform = forms.DDiffForm(g.db, set_id, request)
-    valid_choices = [tup[0] for tup in dform.form.diffs.choices]
-    for diff in dform.form.diffs.data:
-        assert diff in valid_choices
-        logging.warn('deleting diff %s',diff)
-        dform.set_obj.delete_diff(diff)
+    for diff in dform.delete_diffs:
+        diff_obj = savant.diffs.Diff(diff)
+        dform.set_obj.delete_diff(diff_obj)
     message = Markup('Set updated: <strong>%s %s: %s</strong>' %
             (
                 dform.set_obj.info.action,
@@ -96,8 +95,8 @@ def set_update_diffs():
 def set_delete():
     escaped_id=request.form['escaped_id']
     set_id = urllib.unquote(escaped_id)
-    set_obj = savant.sets.get(set_id, g.db)
-    savant.sets.delete(set_id, g.db)
+    set_obj = savant.sets.Set(g.db, set_id)
+    set_obj.delete()
     message = Markup('Set deleted: <strong>%s %s: %s</strong>' %
             (
                 set_obj.info.action,

@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-<p>Use this interface to view and assign diffs. The following diffs are pending assignment:
+<p>Use this interface to view comparisons that have unassigned diffs.
+  {% if comparisons %}
   <ul class=entries>
-  {% for diff in diffs %}
-    <li><a href="{{ url_for('diff', id=diff) }}">{{ diff|truncate(6, True) }}</a>
-  {% else %}
-    <li><em>No diffs pending at the moment. Use bassist to add some.</em>
+  {% for comparison in comparisons %}
+    <li><a href="{{ url_for('comparison', id=comparison) }}">{{ comparison|truncate(6, True) }}</a>
   {% endfor %}
   </ul>
+  {% else %}
+    <p><em>There are no comparisons available. Use bassist to add some.</em>
+  {% endif %}
 {% endblock %}
 

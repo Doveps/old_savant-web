@@ -27,28 +27,12 @@ def before_request():
 
 @app.route('/')
 def home():
-    return render_template('home.html', diffs=savant.comparisons.all(g.db))
+    return render_template('home.html', comparisons=savant.comparisons.all(g.db))
 
-@app.route('/diff/<id>')
-def diff(id=None):
+@app.route('/comparison/<id>')
+def comparison(id=None):
     dform = forms.DDiffNamingForm(g.db, id)
-    return render_template('diff.html', id=id, form=dform.form)
-
-@app.route('/diff/add', methods=['POST'])
-def diff_add():
-    id=request.form['id']
-    dform = forms.DDiffNamingForm(g.db, id, request)
-    new_set = savant.sets.Set(g.db, dform.set_id)
-    new_set.update_diffs(dform.set_choices)
-    message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
-        (
-        dform.form.action.data,
-        dform.form.system.data,
-        dform.form.name.data,
-        str(len(dform.set_choices)),
-        ))
-    flash(message)
-    return redirect(url_for('diff', id=id))
+    return render_template('comparison.html', id=id, form=dform.form)
 
 @app.route('/sets')
 def sets():
@@ -72,6 +56,22 @@ def set(escaped_id=None):
     set_id = urllib.unquote(escaped_id)
     dform = forms.DDiffForm(g.db, set_id)
     return render_template('set.html', esc = escaped_id, res = dform.set_obj.info, form = dform.form)
+
+@app.route('/set/add', methods=['POST'])
+def set_add():
+    id=request.form['id']
+    dform = forms.DDiffNamingForm(g.db, id, request)
+    new_set = savant.sets.Set(g.db, dform.set_id)
+    new_set.update_diffs(dform.set_choices)
+    message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %
+        (
+        dform.form.action.data,
+        dform.form.system.data,
+        dform.form.name.data,
+        str(len(dform.set_choices)),
+        ))
+    flash(message)
+    return redirect(url_for('comparison', id=id))
 
 @app.route('/set/update_diffs', methods=['POST'])
 def set_update_diffs():

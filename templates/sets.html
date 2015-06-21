@@ -4,15 +4,18 @@
 <p>The following sets exist:
   <ul class=entries>
   {% for data in sets %}
-  <li><strong>{{ data['set'].info.action }} {{ data['set'].info.system }}: <a href="{{ url_for('set_edit', escaped_id=data['set'].quote()) }}">{{ data['set'].info.name }}</strong></a>
+  <li>
+    <strong>{{ data['set'].info.action }} {{ data['set'].info.system }}: 
+      <a href="{{ url_for('set_edit', escaped_id=data['set'].quote()) }}">{{ data['set'].info.name }}</strong></a>
+    has <strong>{{ data['set'].__len__() }}</strong> diff/s
+
     <ul>
-      <li>Has <strong>{{ data['set'].__len__() }}</strong> diff/s
-      <li>From comparison/s:
-      <ul>
+
+      <li class=entries>From comparison/s:
       {% for comp in data['comparisons'] %}
-      <li><a href="{{ url_for('comparison', id=comp) }}">{{ comp|truncate(6, True) }}</a>
+      <a href="{{ url_for('comparison', id=comp) }}">{{ comp|truncate(6, True) }}</a>
       {% endfor %}
-      </ul>
+
       {% if data['other_sets'] %}
       <li>Shared with set/s:
       <ul>
@@ -21,6 +24,7 @@
       {% endfor %}
       </ul>
       {% endif %}
+
     </ul>
   {% else %}
     <li><em>No sets exist at the moment. Choose from the <a href="{{ url_for('home') }}">pending list</a> to add some.</em>

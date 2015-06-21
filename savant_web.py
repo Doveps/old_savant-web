@@ -41,19 +41,36 @@ def sets():
     sets = []
     for set_id in set_ids:
         set_obj = savant.sets.Set(g.db, set_id)
+
+        comparisons = []
+        other_sets = []
+
+        for diff_id in set_obj.get_diff_ids():
+            diff = savant.diffs.Diff(diff_id)
+            comparisons.extend(savant.comparisons.find_with_diff(diff, g.db))
+            other_sets.extend(savant.sets.find_with_diff(diff, g.db))
+
+        comparisons = sorted(list(set(comparisons)))
+
+        other_sets = sorted(list(set(other_sets)))
+        other_sets.remove(set_id)
+        other_sets = [savant.sets.Set(g.db, s) for s in other_sets]
+
         data = {
                 'id': set_id,
-                'esc': urllib.quote(set_id, ''),
+                'esc': set_obj.quote(),
                 'action': set_obj.info.action,
                 'system': set_obj.info.system,
                 'name': set_obj.info.name,
                 'len': len(set_obj),
+                'comparisons': comparisons,
+                'other_sets': other_sets,
                 }
         sets.append(data)
     return render_template('sets.html', sets=sets)
 
-@app.route('/set/<escaped_id>')
-def set(escaped_id=None):
+@app.route('/set/edit/<escaped_id>')
+def set_edit(escaped_id=None):
     set_id = urllib.unquote(escaped_id)
     dform = forms.DDiffForm(g.db, set_id)
     return render_template('set.html', esc = escaped_id, res = dform.set_obj.info, form = dform.form)
@@ -89,7 +106,7 @@ def set_update_diffs():
                 dform.set_obj.info.name
                 ))
     flash(message)
-    return redirect(url_for('set', escaped_id=escaped_id))
+    return redirect(url_for('set_edit', escaped_id=escaped_id))
 
 @app.route('/set/delete', methods=['POST'])
 def set_delete():

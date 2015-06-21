@@ -3,7 +3,24 @@
 <p>The following sets exist:
   <ul class=entries>
   {% for data in sets %}
-  <li>{{ data['action'] }} {{ data['system'] }}: <a href="{{ url_for('set', escaped_id=data['esc']) }}">{{ data['name'] }}</a> ({{ data['len'] }})
+  <li><strong>{{ data['action'] }} {{ data['system'] }}: <a href="{{ url_for('set_edit', escaped_id=data['esc']) }}">{{ data['name'] }}</strong></a>
+    <ul>
+      <li>Has <strong>{{ data['len'] }}</strong> diff/s
+      <li>From comparison/s:
+      <ul>
+      {% for comp in data['comparisons'] %}
+      <li><a href="{{ url_for('comparison', id=comp) }}">{{ comp|truncate(6, True) }}</a>
+      {% endfor %}
+      </ul>
+      {% if data['other_sets'] %}
+      <li>Shared with set/s:
+      <ul>
+      {% for set in data['other_sets'] %}
+      <li>{{ set.info.action }} {{ set.info.system }}: <a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">{{ set.info.name }}</a>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </ul>
   {% else %}
     <li><em>No sets exist at the moment. Choose from the <a href="{{ url_for('home') }}">pending list</a> to add some.</em>
   {% endfor %}

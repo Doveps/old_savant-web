@@ -57,12 +57,7 @@ def sets():
         other_sets = [savant.sets.Set(g.db, s) for s in other_sets]
 
         data = {
-                'id': set_id,
-                'esc': set_obj.quote(),
-                'action': set_obj.info.action,
-                'system': set_obj.info.system,
-                'name': set_obj.info.name,
-                'len': len(set_obj),
+                'set': set_obj,
                 'comparisons': comparisons,
                 'other_sets': other_sets,
                 }

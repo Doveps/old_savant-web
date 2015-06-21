@@ -3,9 +3,9 @@
 <p>The following sets exist:
   <ul class=entries>
   {% for data in sets %}
-  <li><strong>{{ data['action'] }} {{ data['system'] }}: <a href="{{ url_for('set_edit', escaped_id=data['esc']) }}">{{ data['name'] }}</strong></a>
+  <li><strong>{{ data['set'].info.action }} {{ data['set'].info.system }}: <a href="{{ url_for('set_edit', escaped_id=data['set'].quote()) }}">{{ data['set'].info.name }}</strong></a>
     <ul>
-      <li>Has <strong>{{ data['len'] }}</strong> diff/s
+      <li>Has <strong>{{ data['set'].__len__() }}</strong> diff/s
       <li>From comparison/s:
       <ul>
       {% for comp in data['comparisons'] %}

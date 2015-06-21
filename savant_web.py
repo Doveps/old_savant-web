@@ -104,10 +104,19 @@ def sets():
 def set_edit(escaped_id=None):
     set_id = urllib.unquote(escaped_id)
     dform = forms.DDiffForm(g.db, set_id)
+    set_obj = dform.set_obj
+
+    comparisons = []
+    for diff_id in set_obj.get_diff_ids():
+        diff = savant.diffs.Diff(diff_id)
+        comparisons.extend(savant.comparisons.find_with_diff(diff, g.db))
+    comparisons = sorted(list(set(comparisons)))
+    comparisons = [savant.comparisons.Comparison(g.db, c) for c in comparisons]
+
     return render_template(
             'set.html',
-            esc = escaped_id,
-            res = dform.set_obj.info,
+            set = set_obj,
+            comparisons = comparisons,
             form = dform.form)
 
 @app.route('/set/add', methods=['POST'])

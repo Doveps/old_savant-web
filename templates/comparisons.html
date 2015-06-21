@@ -1,11 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
+<h2>Comparisons</h2>
 <p>Use this interface to view pending and assigned comparisons.
 
   {% if comparisons %}
 
   {% if incomplete %}
-  <h2>Pending</h2>
+  <h3>Pending</h3>
   <p>The following comparisons have diffs that are pending assignment to a set.
   Clicking on a comparison link will allow you to add its diffs to sets:
 
@@ -17,7 +18,7 @@
   {% endif %}
 
   {% if complete %}
-  <h2>Complete</h2>
+  <h3>Complete</h3>
   <p>The following comparisons are already assigned to sets. Clicking on a
   comparison link will allow you to add its diffs to more sets:
 

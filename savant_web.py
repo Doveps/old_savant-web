@@ -28,7 +28,23 @@ def before_request():
 
 @app.route('/')
 def home():
-    return render_template('home.html', comparisons=savant.comparisons.all(g.db))
+    all_comps = savant.comparisons.all(g.db)
+    complete = []
+    incomplete = []
+
+    for comp_id in all_comps:
+        comp_obj = savant.comparisons.Comparison(g.db, id=comp_id)
+        if comp_obj.all_assigned():
+            complete.append(comp_obj.id)
+        else:
+            incomplete.append(comp_obj.id)
+
+    return render_template(
+            'home.html',
+            comparisons = all_comps,
+            complete = complete,
+            incomplete = incomplete,
+            )
 
 @app.route('/comparison/<id>')
 def comparison(id=None):

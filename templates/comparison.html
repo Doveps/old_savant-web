@@ -1,16 +1,33 @@
 {% extends "layout.html" %}
 {% from "_formhelpers.html" import render_field %}
 {% block body %}
-  <p>Assign at least one diff from this comparison to a new or existing set.
-  <form action="{{ url_for('set_add') }}" method=post class=add-entry>
-    <input type=hidden name=id value={{ id }}>
-    <dl>
-      {{ render_field(form.diffs, size=form.diffs.choices|length) }}
-      {{ render_field(form.action) }}
-      {{ render_field(form.system) }}
-      {{ render_field(form.name) }}
-      <dd><input type=submit value=Add>
-    </dl>
-  </form>
-{% endblock %}
+<h2><a href="{{ url_for('comparisons') }}">Comparisons</a> / {{ id|truncate(6, True) }}</h2>
 
+<h3>Assign</h3>
+<p>Assign at least one diff from this comparison to a new or existing set.
+<form action="{{ url_for('set_add') }}" method=post class=add-entry>
+  <input type=hidden name=id value={{ id }}>
+  <dl>
+    {{ render_field(form.diffs, size=form.diffs.choices|length) }}
+    {{ render_field(form.action) }}
+    {{ render_field(form.system) }}
+    {{ render_field(form.name) }}
+    <dd><input type=submit value=Add>
+  </dl>
+</form>
+
+{% if sets %}
+<h3>In Sets</h3>
+<p>This comparison is currently associated with the following sets:</p>
+
+<ul class=entries>
+{% for set in sets %}
+<li>{{ set.info.action }} {{ set.info.system }}: 
+<a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">{{ set.info.name }}</a>
+({{ set|length }} diff/s)
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

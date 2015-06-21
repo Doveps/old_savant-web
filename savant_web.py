@@ -55,7 +55,21 @@ def comparisons():
 @app.route('/comparison/<id>')
 def comparison(id=None):
     dform = forms.DDiffNamingForm(g.db, id)
-    return render_template('comparison.html', id=id, form=dform.form)
+    comp_obj = savant.comparisons.Comparison(g.db, id=id)
+
+    sets = []
+    for diff_id in comp_obj.get_diff_ids():
+        diff = savant.diffs.Diff(diff_id)
+        sets.extend(savant.sets.find_with_diff(diff, g.db))
+    sets = sorted(list(set(sets)))
+    sets = [savant.sets.Set(g.db, s) for s in sets]
+
+    return render_template(
+            'comparison.html',
+            id = id,
+            sets = sets,
+            form = dform.form,
+            )
 
 @app.route('/sets')
 def sets():
@@ -90,7 +104,11 @@ def sets():
 def set_edit(escaped_id=None):
     set_id = urllib.unquote(escaped_id)
     dform = forms.DDiffForm(g.db, set_id)
-    return render_template('set.html', esc = escaped_id, res = dform.set_obj.info, form = dform.form)
+    return render_template(
+            'set.html',
+            esc = escaped_id,
+            res = dform.set_obj.info,
+            form = dform.form)
 
 @app.route('/set/add', methods=['POST'])
 def set_add():

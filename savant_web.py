@@ -28,6 +28,12 @@ def before_request():
 
 @app.route('/')
 def home():
+    return render_template(
+            'home.html',
+            )
+
+@app.route('/comparisons')
+def comparisons():
     all_comps = savant.comparisons.all(g.db)
     complete = []
     incomplete = []
@@ -40,7 +46,7 @@ def home():
             incomplete.append(comp_obj.id)
 
     return render_template(
-            'home.html',
+            'comparisons.html',
             comparisons = all_comps,
             complete = complete,
             incomplete = incomplete,

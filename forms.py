@@ -16,13 +16,27 @@ class DiffNamingForm(DiffForm):
 
 class DDiffBase(object):
     '''Shared methods for DDiff Forms.'''
-    def get_diff_choices(self, diff_ids):
+    def get_diff_choices(self, diff_ids, exclude_set_ids=[]):
         diff_choices = []
 
         prev_system = ''
         prev_action = ''
+        self.logger.warn(exclude_set_ids)
+
+        # take a list of savant set objects
+        # turn them into a python set, for disjoint comparisons
+        exclude_set_ids = set(exclude_set_ids)
+        # yes this is confusing
+
         for id in sorted(diff_ids):
             diff = savant.diffs.Diff(id)
+
+            set_ids_with_diff = savant.sets.find_with_diff(diff, self.db)
+            # the sets this diff is in are part of the excluded ids?
+            if not exclude_set_ids.isdisjoint(set_ids_with_diff):
+                continue
+
+            set_id_count = str(len(set_ids_with_diff))
 
             if diff.system != prev_system:
                 diff_choices.append(('Isystem', diff.system))
@@ -33,7 +47,6 @@ class DDiffBase(object):
                 diff_choices.append(('I'+diff.action, '- '+diff.action))
                 prev_action = diff.action
 
-            set_id_count = str(len(savant.sets.find_with_diff(diff, self.db)))
             diff_choices.append(
                     (diff.id, '--- '+diff.name+' ('+set_id_count+')'))
 
@@ -67,7 +80,7 @@ class DDiffForm(DDiffBase):
 
 class DDiffNamingForm(DDiffBase):
     '''This is the dynamic version of the DiffNamingForm.'''
-    def __init__(self, db, comparison_id, request=None):
+    def __init__(self, db, comparison_id, request=None, exclude_set_ids=[]):
         self.logger = logging.getLogger(__name__ + '.' + type(self).__name__)
         self.db = db
         self.comparison_id = comparison_id
@@ -82,7 +95,7 @@ class DDiffNamingForm(DDiffBase):
             self.set_choices = self.get_valid_choices(self.form.diffs.data)
 
         comparison = savant.comparisons.Comparison(db, id=comparison_id)
-        self.form.diffs.choices = self.get_diff_choices(comparison.get_diff_ids())
+        self.form.diffs.choices = self.get_diff_choices(comparison.get_diff_ids(), exclude_set_ids)
         self.form.name.choices = self.get_name_choices()
 
         self.system_choices = []

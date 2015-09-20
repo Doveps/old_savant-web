@@ -4,7 +4,25 @@
 <h2><a href="{{ url_for('comparisons') }}">Comparisons</a> / {{ id|truncate(6, True) }}</h2>
 
 <h3>Assign</h3>
-<p>Assign at least one diff from this comparison to a new or existing set.
+
+{% if sets %}
+<p>This comparison is currently associated with the following sets:</p>
+
+<ul class=entries>
+{% for set in sets %}
+<li>{{ set.info.action }} {{ set.info.system }}: {{ set.info.name }}
+({{ set|length }} diff{% if set|length != 1 %}s{% endif %})
+<ul>
+  <li>
+  <a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">view set</a> |
+  include diffs on this page
+  </li>
+</ul>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
 <form action="{{ url_for('set_add') }}" method=post class=add-entry>
   <input type=hidden name=id value={{ id }}>
   <dl>
@@ -15,19 +33,5 @@
     <dd><input type=submit value=Add>
   </dl>
 </form>
-
-{% if sets %}
-<h3>In Sets</h3>
-<p>This comparison is currently associated with the following sets:</p>
-
-<ul class=entries>
-{% for set in sets %}
-<li>{{ set.info.action }} {{ set.info.system }}: 
-<a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">{{ set.info.name }}</a>
-({{ set|length }} diff/s)
-</li>
-{% endfor %}
-</ul>
-{% endif %}
 
 {% endblock %}

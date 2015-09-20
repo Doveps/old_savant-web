@@ -54,7 +54,6 @@ def comparisons():
 
 @app.route('/comparison/<id>')
 def comparison(id=None):
-    dform = forms.DDiffNamingForm(g.db, id)
     comp_obj = savant.comparisons.Comparison(g.db, id=id)
 
     sets = []
@@ -63,6 +62,9 @@ def comparison(id=None):
         sets.extend(savant.sets.find_with_diff(diff, g.db))
     sets = sorted(list(set(sets)))
     sets = [savant.sets.Set(g.db, s) for s in sets]
+    set_ids = [s.id for s in sets]
+
+    dform = forms.DDiffNamingForm(g.db, id, exclude_set_ids=set_ids)
 
     return render_template(
             'comparison.html',

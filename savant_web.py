@@ -129,6 +129,10 @@ def set_edit(escaped_id=None):
 def set_add():
     id=request.form['id']
     dform = forms.DDiffNamingForm(g.db, id, request)
+    if len(dform.set_choices) == 0:
+        flash(Markup('Did you forget to choose diffs?'))
+        return redirect(url_for('comparison', id=id))
+
     new_set = savant.sets.Set(g.db, dform.set_id)
     new_set.update_diffs(dform.set_choices)
     message = Markup('New set; action: <strong>%s</strong>; system: <strong>%s</strong>; name: <strong>%s</strong>; diffs: <strong>%s</strong>' %

@@ -16,7 +16,7 @@
   <li>
   <a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">view</a> set
   |
-  <a href="{{ url_for('comparison', id=id, include=set.quote()) }}">include</a> set's diffs on this page
+  <a href="{{ url_for('comparison', id=id, include=set.quote()) }}">show</a> set's diffs on this page
   </li>
 </ul>
 </li>
@@ -24,6 +24,9 @@
 </ul>
 {% endif %}
 
+{% if form.diffs.choices|length == 0 %}
+<p>There are no remaining unassigned diffs. To assign diffs to new sets, choose one of the "show set's diffs" links above.</p>
+{% else %}
 <form action="{{ url_for('set_add') }}" method=post class=add-entry>
   <input type=hidden name=id value={{ id }}>
   <dl>
@@ -34,5 +37,6 @@
     <dd><input type=submit value=Add>
   </dl>
 </form>
+{% endif %}
 
 {% endblock %}

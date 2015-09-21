@@ -66,7 +66,7 @@ def comparison(id=None):
 
     include_id = request.args.get('include')
     if include_id is not None:
-        include_id = urllib.unquote()
+        include_id = urllib.unquote(include_id)
         exclude_set_ids.remove(include_id)
     dform = forms.DDiffNamingForm(g.db, id, exclude_set_ids=exclude_set_ids)
 

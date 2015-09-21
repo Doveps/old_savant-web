@@ -62,9 +62,13 @@ def comparison(id=None):
         sets.extend(savant.sets.find_with_diff(diff, g.db))
     sets = sorted(list(set(sets)))
     sets = [savant.sets.Set(g.db, s) for s in sets]
-    set_ids = [s.id for s in sets]
+    exclude_set_ids = [s.id for s in sets]
 
-    dform = forms.DDiffNamingForm(g.db, id, exclude_set_ids=set_ids)
+    include_id = request.args.get('include')
+    if include_id is not None:
+        include_id = urllib.unquote()
+        exclude_set_ids.remove(include_id)
+    dform = forms.DDiffNamingForm(g.db, id, exclude_set_ids=exclude_set_ids)
 
     return render_template(
             'comparison.html',

@@ -21,7 +21,7 @@ class DDiffBase(object):
 
         prev_system = ''
         prev_action = ''
-        self.logger.warn(exclude_set_ids)
+        self.logger.debug('excluding set ids: %s',exclude_set_ids)
 
         # take a list of savant set objects
         # turn them into a python set, for disjoint comparisons

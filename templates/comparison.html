@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% from "_formhelpers.html" import render_field, render_multiselect %}
 {% block body %}
-<h2><a href="{{ url_for('comparisons') }}">Comparisons</a> / {{ id|truncate(6, True) }}</h2>
+<h2><a href="{{ url_for('comparisons') }}">Comparisons</a> / <a href="{{ url_for('comparison', id=id) }}">{{ id|truncate(6, True) }}</a></h2>
 
 <h3>Assign</h3>
 
@@ -14,8 +14,9 @@
 ({{ set|length }} diff{% if set|length != 1 %}s{% endif %})
 <ul>
   <li>
-  <a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">view set</a> |
-  include diffs on this page
+  <a href="{{ url_for('set_edit', escaped_id=set.quote()) }}">view</a> set
+  |
+  <a href="{{ url_for('comparison', id=id, include=set.quote()) }}">include</a> set's diffs on this page
   </li>
 </ul>
 </li>

@@ -5,6 +5,8 @@ import logging
 import logging.config
 
 from flask import Flask, g, redirect, url_for, render_template, flash, request, Markup
+import flask_debugtoolbar
+from flask_debugtoolbar_lineprofilerpanel.profile import line_profile
 
 import savant.db
 import savant.comparisons
@@ -19,12 +21,46 @@ SECRET_KEY = 'development key'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.debug = True
 
-logging.config.fileConfig('log.conf')
+app.config['DEBUG_TB_PANELS'] = [
+    'flask_debugtoolbar.panels.versions.VersionDebugPanel',
+    'flask_debugtoolbar.panels.timer.TimerDebugPanel',
+    'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
+    'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+    'flask_debugtoolbar.panels.template.TemplateDebugPanel',
+    #'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
+    #'flask_debugtoolbar.panels.logger.LoggingPanel',
+    'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
+    'flask_debugtoolbar_lineprofilerpanel.panels.LineProfilerPanel'
+]
+app.config['DEBUG_TB_PROFILER_ENABLED'] = True
+toolbar = flask_debugtoolbar.DebugToolbarExtension(app)
+
+try:
+    logging.config.fileConfig('log.conf', disable_existing_loggers=False)
+except ConfigParser.NoSectionError:
+    # probably no log.conf file
+    logging.basicConfig(
+            format='%(message)s',
+            )
+
+logger = logging.getLogger(__name__)
+
+try:
+    from log_override import LOG_OVERRIDES
+    logging.config.dictConfig(LOG_OVERRIDES)
+except:
+    logger.debug('unable to load log_override; ignoring')
 
 @app.before_request
 def before_request():
     g.db = savant.db.DB(args.inference_db)
+
+@app.after_request
+def after_request(response):
+    g.db.close()
+    return response
 
 @app.route('/')
 def home():

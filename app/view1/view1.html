@@ -1,8 +1,24 @@
 <input type="text" ng-model="name" placeholder="Type your name here"/>
+<br>
+<input type="text" ng-model="age" placeholder="Type your age here"/>
 <input type="button" value="Add Name" ng-click="addName()"/>
 <br/>
 <h1>Hello, {{name}}</h1>
 <hr/>
 <ul>
-<li ng-repeat="nm in names">{{nm.name}}</li>
+<li ng-repeat="arrayObject in names">{{arrayObject.name}}, {{arrayObject.age}}</li>
+<li ng-repeat="otherArrayObject in things">{{otherArrayObject.ids}}, {{otherArrayObject.timestamps}}</li>
 </ul>
+<h6>{{testGet}}</h6>
+
+
+<div ng-controller="View1Ctrl">
+  <p>Reload this page with open console, enter text and hit the log button...</p>
+  <label>Message:
+  <input type="text" ng-model="message" /></label>
+  <button ng-click="$log.log(message)">log</button>
+  <button ng-click="$log.warn(message)">warn</button>
+  <button ng-click="$log.info(message)">info</button>
+  <button ng-click="$log.error(message)">error</button>
+  <button ng-click="$log.debug(message)">debug</button>
+</div>

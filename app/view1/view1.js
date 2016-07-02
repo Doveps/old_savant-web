@@ -9,29 +9,95 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', [ '$scope', function($scope) {
+
+.controller('View1Ctrl', [ '$scope', '$log', '$http', function($scope, $log, $http) {
   $scope.name = '';
-  $scope.names = [{name:"Chris"}, {name:"Calvin"}];
+  $scope.age;
+  $scope.names = [{name:"Chris", age: 10}, {name:"Calvin", age: 15},]; //Those things are hashes. Name set to thing. Thing set to property.
+  
   $scope.addName = function() {
-    $scope.names.push( {'name':$scope.name} );
+    $scope.names.push( {'name':$scope.name, 'age':$scope.age} );
+    
     $scope.name = '';
-  };
-}]);
+    $scope.age = 0;
+    $scope.$log = $log;
+    $scope.message = "what";
 
 /*
-.controller('View1Ctrl', [ '$http', function MyCtrl1 ($scope, $http) {
-  $http.get("http://localhost:5000/snapshots").then(function(response) {
-    $scope.snapshots = response.data;
-  });
+    $scope.ids = '';
+    $scope.times = '';
+
+    $scope.things = [{ids:response.data}];
+    $log.debug(response.data.secondary_id);
+    $scope.things.push({'ids':$scope.ids});
+    //$log.debug($scope.names);
+*/
+  };
+   $http({
+        method: 'GET',
+        url: 'http://localhost:5000/snapshots',
+        headers: {'Content-Type':'text/plain'}
+     }).then(function successCallback(response){
+       $log.debug('hello!!!');
+       //$log.debug(response.data);
+       var arrayLength = response.data.length;
+       var arrayTest = ["Test1", "Test2", "Test3"];
+       
+       $scope.ids;
+       $scope.timestamps;
+       $scope.things = [];
+
+       for(var i = 0; i < arrayLength; i++){
+         //$log.debug(arrayTest[i]);
+         //console.log(arrayTest[i]);
+         $log.debug(response.data[i].secondary_id);
+
+         $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp});
+         //Er... I dunno... Fiddle with this?
+
+         
+       }
+      /*
+      $scope.addThings = function(){
+        $scope.things.push({'thing1':$scope.thing1});
+
+      }
+     */
+    }, function errorCallback(response){
+       $log.debug('hello!?');
+       //$log.debug(response.data);
+     }
+    
+     );
+    
+     /*
+     $http.get("http://jsonplaceholder.typicode.com/").then(function(response){
+       $log.debug(response.data);
+       
+     });
+     */
+     /*
+     $http.get("http://jsonplaceholder.typicode.com/").then(function(response){
+       //$scope.snapshots = response.data;
+       //$log.debug($scope.snapshots);
+       $log.debug(response.data); 
+     });
+     */
 }]);
 
-.controller('View1Ctrl', [function() {
+//http://localhost:5000/snapshots
+/*
+$scope.id;
+$scope.things = [{id: $scope.snapshots.secondary_id}];
+$scope.addThing = function(){
+  
 
-}]);
+}
+*/
 
-.controller('View1Ctrl', [function($scope, $http) {
-  $http.get("http://localhost:5000/snapshots").then(function(response) {
-    $scope.snapshots = response.data;
-  });
-}]);
+/*
+function createCORSRequest(method, url){
+  var xhr = new XMLHttpRequest();
+
+}
 */

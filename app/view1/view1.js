@@ -53,6 +53,7 @@ angular.module('myApp.view1', ['ngRoute'])
          $log.debug(response.data[i].secondary_id);
 
          $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp});
+         
          //Er... I dunno... Fiddle with this?
 
          

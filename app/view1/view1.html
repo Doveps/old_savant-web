@@ -10,7 +10,22 @@
 <li ng-repeat="arrayObject in names">{{arrayObject.name}}, {{arrayObject.age}}</li>
 <a href = "#"><li ng-repeat="otherArrayObject in things">{{otherArrayObject.ids}}, {{otherArrayObject.timestamps}}</li></a>
 </ul>
-<h6>{{testGet}}</h6>
+<table style="width:100%">
+  
+  <tr>
+    <td><b>ID!</b></td>
+    <td><b>Timestamp!</b></td> 
+    <!--Not the proper way to do table headings, but it looks the part...-->
+  </tr>
+ 
+    <a href = "#"><tr ng-repeat="otherArrayObject in things">
+    <td>{{otherArrayObject.ids}}</td>
+    <td>{{otherArrayObject.timestamps}}</td>
+    </tr>
+    </a>
+  
+</table>
+<h6>{{testGet}}</h6> <!--Does this do anything?-->
 
 
 <div ng-controller="View1Ctrl">

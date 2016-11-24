@@ -1,33 +1,55 @@
+<html ng-app>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<!--
+<html ng-app="mgcrea.ngStrapDocs">
+  -->
 <input type="text" ng-model="name" placeholder="Type your name here"/>
 <br>
 <input type="text" ng-model="age" placeholder="Type your age here"/>
 <input type="button" value="Add Name" ng-click="addName()"/>
+<!--
 <button type = "button" onclick="var audioThing = new Audio('Wright_Objection.mp3'); audioThing.play();"><strong>Objection!</strong></button>
+-->
 <br/>
+<!--
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<!--
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.tpl.min.js"></script>
+-->
+<!--Grabbing scripts from a rando website. Not harmful at all! -->
 <h1>Hello, {{name}}</h1>
 <hr/>
+<!--
 <ul>
 <li ng-repeat="arrayObject in names">{{arrayObject.name}}, {{arrayObject.age}}</li>
-<a href = "#"><li ng-repeat="otherArrayObject in things">{{otherArrayObject.ids}}, {{otherArrayObject.timestamps}}</li></a>
+<li ng-repeat="otherArrayObject in things">{{otherArrayObject.ids}}, {{otherArrayObject.timestamps}}</li>
 </ul>
-<table style="width:100%">
-  
-  <tr>
-    <td><b>ID!</b></td>
-    <td><b>Timestamp!</b></td> 
-    <!--Not the proper way to do table headings, but it looks the part...-->
-  </tr>
- 
-    <a href = "#"><tr ng-repeat="otherArrayObject in things">
-    <td>{{otherArrayObject.ids}}</td>
-    <td>{{otherArrayObject.timestamps}}</td>
+-->
+<table style="width:100%" class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Timestamp</th>
     </tr>
-    </a>
+  </thead>
+    <a href = "#"><tr ng-repeat="otherArrayObject in things">
+      <td>{{otherArrayObject.ids}}</td>
+      <td>{{otherArrayObject.timestamps}}</td>
+      <td>{{otherArrayObject.converted}}</td>
+    </tr></a>
   
 </table>
 <h6>{{testGet}}</h6> <!--Does this do anything?-->
 
-
+<!--
 <div ng-controller="View1Ctrl">
   <p>Reload this page with open console, enter text and hit the log button...</p>
   <label>Message:
@@ -38,3 +60,5 @@
   <button ng-click="$log.error(message)">error</button>
   <button ng-click="$log.debug(message)">debug</button>
 </div>
+-->
+</html>

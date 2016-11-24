@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.view1', ['ngRoute'/*'mgcrea.ngStrap'*/]) //Does that work? ['ngRoute'] 'myApp.view1'
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
@@ -22,7 +22,7 @@ angular.module('myApp.view1', ['ngRoute'])
     $scope.age = 0;
     $scope.$log = $log;
     $scope.message = "what";
-
+    log.debug("Does this button work?");
 /*
     $scope.ids = '';
     $scope.times = '';
@@ -52,7 +52,8 @@ angular.module('myApp.view1', ['ngRoute'])
          //console.log(arrayTest[i]);
          $log.debug(response.data[i].secondary_id);
 
-         $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp});
+         $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp, 'converted':convertTime(response)});
+         //Converting timestmap to time? I'm not actually sure if this is a timecode or just seconds... 
          
          //Er... I dunno... Fiddle with this?
 
@@ -84,6 +85,12 @@ angular.module('myApp.view1', ['ngRoute'])
        $log.debug(response.data); 
      });
      */
+    
+    function convertTime(response){
+      var date = new Date(response.data[i].timestamp)
+      return date.getDate();
+    }
+    
 }]);
 
 //http://localhost:5000/snapshots

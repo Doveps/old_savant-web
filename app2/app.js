@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 angular
     .module('app', [
         /*
@@ -26,17 +25,3 @@ function run($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 }
-=======
-'use strict';
-
-// Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
-]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
->>>>>>> b5f2b2ab985cd3bf34e403ddece257a9ee3d0024

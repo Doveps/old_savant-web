@@ -1,4 +1,0 @@
-savant
-Flask
-ZODB
-WTForms

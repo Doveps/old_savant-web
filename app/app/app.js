@@ -10,6 +10,7 @@ angular
          */
     ])
     .config(routeConfig)
+    .constant('BASE_URL', 'http://localhost:8000')
     .run(run);
 
 function routeConfig($urlRouterProvider, $httpProvider, $resourceProvider) {

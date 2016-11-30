@@ -1,15 +1,34 @@
 <!doctype html>
-<title>Savant-Web</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1><a href="{{ url_for('home') }}">Savant-Web</a></h1>
-  <div class=metanav>
-    <a href="{{ url_for('home') }}">home</a>
-    <a href="{{ url_for('comparisons') }}">comparisons</a>
-    <a href="{{ url_for('sets') }}">sets</a>
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
-</div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Savant-Web</title>
+
+    <link rel=stylesheet type=text/css href="css/style.css">
+</head>
+<body>
+
+<ui-view></ui-view>
+
+
+<!--
+////
+Angular Libraries
+////
+-->
+<script src="js/angular/angular.min.js"></script>
+<script src="js/angular-resource/angular-resource.min.js"></script>
+<script src="js/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+<!--
+////
+Custom App Modules
+////
+-->
+<script src="app/app.js"></script>
+<script src="app/config.route.js"></script>
+</body>
+</html>

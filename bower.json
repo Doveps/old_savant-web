@@ -1,0 +1,17 @@
+{
+  "name": "savant-web",
+  "homepage": "https://github.com/Doveps/savant-web",
+  "authors": [
+    "Roselle Ebarle <roselle.ebarle04@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

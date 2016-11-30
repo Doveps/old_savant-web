@@ -1,6 +1,4 @@
-{% from "_formhelpers.html" import render_multiselect %}
-{% block body %}
-<h2><a href="{{ url_for('sets') }}">Sets</a> / 
+<h2><a href="{{ url_for('sets') }}">Sets</a> /
   <small>{{ set.info.action }} {{ set.info.system }}: {{ set.info.name }}</small></h2>
 
 {% if form.diffs.choices|length > 0 %}

@@ -1,0 +1,15 @@
+<!doctype html>
+<title>Savant-Web</title>
+<link rel=stylesheet type=text/css href="css/style.css">
+<div class=page>
+    <h1><a href="" ui-sref="dashboard.home">Savant-Web</a></h1>
+    <div class=metanav>
+        <a href="" ui-sref="dashboard.home">home</a>
+        <a href="" ui-sref="dashboard.comparisons">comparisons</a>
+        <a href="" ui-sref="dashboard.sets">sets</a>
+    </div>
+
+    <div ng-repeat="message in messages" class=flash>{{ message }}</div>
+
+    <ui-view></ui-view>
+</div>

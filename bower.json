@@ -12,6 +12,10 @@
     "tests"
   ],
   "dependencies": {
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "html5-boilerplate": "~5.2.0",
     "angular": "^1.5.9",
     "angular-strap": "^2.3.10",
     "angular-resource": "^1.5.8",

@@ -6,4 +6,7 @@ This project was converted to Angular using
 [angular-seed][https://github.com/angular/angular-seed]
 
 # Usage
-* TBD
+```
+# Run the app, then browse to http://localhost:8000/#/
+npm start
+```

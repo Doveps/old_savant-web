@@ -23,10 +23,10 @@ function routeConfig($stateProvider) {
         })
         .state('dashboard.sets', {
             url: "sets",
-            templateUrl: "app/comparisons.html",
+            templateUrl: "app/sets.html",
         })
         .state('dashboard.set', {
             url: "sets/:id",
-            templateUrl: "app/comparison.html",
+            templateUrl: "app/set.html",
         })
 }

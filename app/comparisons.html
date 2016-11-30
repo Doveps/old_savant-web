@@ -1,33 +1,32 @@
 <h2>Comparisons</h2>
+
 <p>Use this interface to view pending and assigned comparisons.
 
-  {% if comparisons %}
+<div ng-if="comparisons.length === 0">
+    <div ng-if="incomplete.length === 0">
+        <h3>Pending</h3>
+        <p>The following comparisons have diffs that are pending assignment to a set.
+            Clicking on a comparison link will allow you to add its diffs to sets:
 
-  {% if incomplete %}
-  <h3>Pending</h3>
-  <p>The following comparisons have diffs that are pending assignment to a set.
-  Clicking on a comparison link will allow you to add its diffs to sets:
+        <ul class=entries>
+            <li ng-repeat="comp in incomplete">
+                <a href="" ui-sref="dashboard.comparison({id:comp})">{{ comp }}</a>
+            </li>
+        </ul>
 
-  <ul class=entries>
-  {% for comp_id in incomplete %}
-    <li><a href="{{ url_for('comparison', id=comp_id) }}">{{ comp_id|truncate(6, True) }}</a>
-  {% endfor %}
-  </ul>
-  {% endif %}
+        <div ng-if="comparisons.length === 0">
+            <p><em>There are no comparisons available. Use bassist to add some.</em></p>
+        </div>
 
-  {% if complete %}
-  <h3>Complete</h3>
-  <p>The following comparisons are already assigned to sets. Clicking on a
-  comparison link will allow you to add its diffs to more sets:
+        <div ng-if="complete.length === 0">
+            <h3>Complete</h3>
+            <p>The following comparisons are already assigned to sets. Clicking on a
+                comparison link will allow you to add its diffs to more sets:
 
-  <ul class=entries>
-  {% for comp_id in complete %}
-    <li><a href="{{ url_for('comparison', id=comp_id) }}">{{ comp_id|truncate(6, True) }}</a>
-  {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% else %}
-    <p><em>There are no comparisons available. Use bassist to add some.</em>
-  {% endif %}
-
+            <ul class=entries>
+                <li ng-repeat="comp in complete">
+                    <a href="" ui-sref="dashboard.comparison({id:comp})">{{ comp_id|truncate(6, True) }}</a>
+            </ul>
+        </div>
+    </div>
+</div>

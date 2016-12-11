@@ -3,7 +3,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+   <script src="../bower_components/moment/min/moment.min.js"></script>
+   <script src="../bower_components/moment/moment.js"></script>
+   <script>
+    moment().format();
+    
+   </script>
 </head>
 <!--
 <html ng-app="mgcrea.ngStrapDocs">
@@ -33,17 +38,20 @@
 <li ng-repeat="otherArrayObject in things">{{otherArrayObject.ids}}, {{otherArrayObject.timestamps}}</li>
 </ul>
 -->
+
 <table style="width:100%" class="table table-hover">
   <thead>
     <tr>
       <th>ID</th>
       <th>Timestamp</th>
+      <th>Date</th>
     </tr>
   </thead>
     <a href = "#"><tr ng-repeat="otherArrayObject in things">
       <td>{{otherArrayObject.ids}}</td>
       <td>{{otherArrayObject.timestamps}}</td>
-      <td>{{otherArrayObject.converted}}</td>
+      <td><mydate>{{otherArrayObject.timestamps*1000 | date: 'yyyy-MM-dd HH:mm:ss Z'}}</mydate></td> <!-- That did... something? It shows a human readable date, but not the right one -->
+      <td>{{otherArrayObject.converted}}</td> <!-- This column never shows up -->
     </tr></a>
   
 </table>

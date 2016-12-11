@@ -1,7 +1,6 @@
 'use strict';
-
-angular.module('myApp.view1', ['ngRoute'/*'mgcrea.ngStrap'*/]) //Does that work? ['ngRoute'] 'myApp.view1'
-
+//I always get an error saying that moment is not defined. Not sure how to get this to recognize moment.
+angular.module('myApp.view1', ['ngRoute']) //Does that work? ['ngRoute'] 'myApp.view1'
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
     templateUrl: 'view1/view1.html',
@@ -50,9 +49,20 @@ angular.module('myApp.view1', ['ngRoute'/*'mgcrea.ngStrap'*/]) //Does that work?
        for(var i = 0; i < arrayLength; i++){
          //$log.debug(arrayTest[i]);
          //console.log(arrayTest[i]);
-         $log.debug(response.data[i].secondary_id);
+         
+         //var pleaseWork = moment.unix(response.data[i].timestamp).format("MM/DD/YYYY");
+         //So the error says moment is not defined... But I imported it? How do I get this to recognize the whole, er, package?
+         //The only reason why it never gives me an error below is because that function is never called in the first place?
+         //$log.debug(pleaseWork);
+         
 
-         $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp, 'converted':convertTime(response)});
+         $scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp, 'converted':function convertTheThing(){
+           var dateConverted = new Date;
+           dateConverted.setTime(response.data[i].timestamp);
+           $log.debug('hello?');
+           return dateConverted;
+         }});
+         //$scope.things.push({'ids':response.data[i].secondary_id, 'timestamps':response.data[i].timestamp, 'converted':response.data[i].timestamp.moment.unix()});
          //Converting timestmap to time? I'm not actually sure if this is a timecode or just seconds... 
          
          //Er... I dunno... Fiddle with this?
@@ -85,12 +95,12 @@ angular.module('myApp.view1', ['ngRoute'/*'mgcrea.ngStrap'*/]) //Does that work?
        $log.debug(response.data); 
      });
      */
-    
+    /*
     function convertTime(response){
       var date = new Date(response.data[i].timestamp)
       return date.getDate();
     }
-    
+    */
 }]);
 
 //http://localhost:5000/snapshots

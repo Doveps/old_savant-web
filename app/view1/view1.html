@@ -3,33 +3,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-   <script src="../bower_components/moment/min/moment.min.js"></script>
-   <script src="../bower_components/moment/moment.js"></script>
-   <script>
-    moment().format();
-    
-   </script>
+ 
+   
+   
 </head>
-<!--
-<html ng-app="mgcrea.ngStrapDocs">
-  -->
+
 <input type="text" ng-model="name" placeholder="Type your name here"/>
 <br>
 <input type="text" ng-model="age" placeholder="Type your age here"/>
 <input type="button" value="Add Name" ng-click="addName()"/>
-<!--
-<button type = "button" onclick="var audioThing = new Audio('Wright_Objection.mp3'); audioThing.play();"><strong>Objection!</strong></button>
--->
+
 <br/>
 <!--
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-<!--
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/v2.3.8/angular-strap.tpl.min.js"></script>
--->
-<!--Grabbing scripts from a rando website. Not harmful at all! -->
+
 <h1>Hello, {{name}}</h1>
 <hr/>
 <!--
@@ -50,8 +39,7 @@
     <a href = "#"><tr ng-repeat="otherArrayObject in things">
       <td>{{otherArrayObject.ids}}</td>
       <td>{{otherArrayObject.timestamps}}</td>
-      <td><mydate>{{otherArrayObject.timestamps*1000 | date: 'yyyy-MM-dd HH:mm:ss Z'}}</mydate></td> <!-- That did... something? It shows a human readable date, but not the right one -->
-      <td>{{otherArrayObject.converted}}</td> <!-- This column never shows up -->
+      <td><mydate>{{otherArrayObject.timestamps*1000 | date: 'medium'}}</mydate></td> 
     </tr></a>
   
 </table>

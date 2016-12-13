@@ -16,22 +16,22 @@ function routeConfig($stateProvider) {
         })
         .state('dashboard.comparisons', {
             url: "comparisons",
-            templateUrl: "app/comparisons.html",
+            templateUrl: "app/comparisons/comparisons.html",
             controller: "ComparisonListController"
         })
         .state('dashboard.comparison', {
             url: "comparisons/:id",
-            templateUrl: "app/comparison-detail.html",
+            templateUrl: "app/comparisons/comparison-detail.html",
             controller: "ComparisonDetailController"
         })
         .state('dashboard.sets', {
             url: "sets",
-            templateUrl: "app/sets.html",
+            templateUrl: "app/sets/sets.html",
             controller: "SetListController"
         })
         .state('dashboard.set', {
             url: "sets/:id",
-            templateUrl: "app/set-detail.html",
+            templateUrl: "app/sets/set-detail.html",
             controller: "SetDetailController"
         })
 }

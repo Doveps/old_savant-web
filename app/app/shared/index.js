@@ -1,8 +1,4 @@
-angular
-    .module('app')
-    .factory('DataService', DataService);
-
-function DataService($http, $resource, BASE_URL) {
+module.exports = function DataService($http, $resource, BASE_URL) {
     return {
         comparisons: comparisons,
         sets: sets

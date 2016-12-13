@@ -10,19 +10,11 @@ var autoprefixer = require("autoprefixer");
 module.exports = {
     context: path.resolve(__dirname, 'app/app'),
     entry: {
-        app: './app/app.js',
+        app: './app.js',
         vendor: [
             'angular',
             'angular-ui-router',
-            'angular-resource',
-            'angular-sanitize',
-            'angular-loading-bar',
-            'angular-animate',
-            'angular-local-storage',
-            'ng-infinite-scroll',
-            'angular-jwt',
-            'ngstorage',
-            'angular-ui-bootstrap'
+            'angular-resource'
         ]
     },
     module: {

@@ -1,24 +1,18 @@
 {
-  "name": "savant-web",
-  "homepage": "https://github.com/Doveps/savant-web",
-  "description": "",
+  "name": "angular-seed",
+  "description": "A starter project for AngularJS",
   "main": "",
+  "authors": [
+    "Roselle Ebarle <roselle.ebarle04@gmail.com>"
+  ],
   "license": "MIT",
+  "homepage": "https://github.com/Doveps/savant-web",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
+    "app/bower_components",
     "test",
     "tests"
-  ],
-  "dependencies": {
-    "angular-route": "~1.4.0",
-    "angular-loader": "~1.4.0",
-    "angular-mocks": "~1.4.0",
-    "html5-boilerplate": "~5.2.0",
-    "angular": "^1.5.9",
-    "angular-strap": "^2.3.10",
-    "angular-resource": "^1.5.8",
-    "angular-ui-router": "^0.3.1"
-  }
+  ]
 }

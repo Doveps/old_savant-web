@@ -8,5 +8,6 @@ This project was converted to Angular using
 # Usage
 ```
 # Run the app, then browse to http://localhost:8000/#/
+npm install
 npm start
 ```

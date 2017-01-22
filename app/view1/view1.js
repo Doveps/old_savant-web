@@ -14,6 +14,53 @@ angular.module('myApp.view1', ['ngRoute']) //Does that work? ['ngRoute'] 'myApp.
   $scope.age;
   $scope.names = [{name:"Chris", age: 10}, {name:"Calvin", age: 15},]; //Those things are hashes. Name set to thing. Thing set to property.
   
+  //Toggle hide/show table column
+  //So... It's supposed to modify the class on the spot but it doesn't.
+  $scope.class = "";
+  
+  $scope.changeClass = function(){
+    //$log.debug("hey"); //Okay that's called
+    if($scope.class === ""){ //It toggles, but the CSS doesn't change.
+      //$log.debug("hey 2");
+      $scope.class = "hideColumn";
+    }
+    else{
+      //$log.debug("hey 3");
+      $scope.class = "";
+    }
+  }
+
+  //Hide and show date column
+  $scope.class2 = "";
+  
+  $scope.changeClass2 = function(){
+    //$log.debug("hey"); //Okay that's called
+    if($scope.class2 === ""){ //It toggles, but the CSS doesn't change.
+      //$log.debug("hey 2");
+      $scope.class2 = "hideColumn";
+    }
+    else{
+      //$log.debug("hey 3");
+      $scope.class2 = "";
+    }
+  }
+
+  //Hide and show ID column
+  
+  $scope.class3 = "";
+  
+  $scope.changeClass3 = function(){
+    //$log.debug("hey"); //Okay that's called
+    if($scope.class3 === ""){ //It toggles, but the CSS doesn't change.
+      //$log.debug("hey 2");
+      $scope.class3 = "hideColumn";
+    }
+    else{
+      //$log.debug("hey 3");
+      $scope.class3 = "";
+    }
+  }
+
   $scope.addName = function() {
     $scope.names.push( {'name':$scope.name, 'age':$scope.age} );
     

@@ -1,26 +1,26 @@
-<html ng-app>
+<html ng-app = "myApp.view1" ng-controller="View1Ctrl">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- 
    
-   
+   <link rel="stylesheet" type = "text/css" href = "view1/style.css">
+   <link href='//fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
 </head>
-
+<!--
 <input type="text" ng-model="name" placeholder="Type your name here"/>
 <br>
 <input type="text" ng-model="age" placeholder="Type your age here"/>
 <input type="button" value="Add Name" ng-click="addName()"/>
-
+-->
 <br/>
 <!--
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
-<h1>Hello, {{name}}</h1>
-<hr/>
+<!--<h1>Hello, {{name}}</h1>-->
+
 <!--
 <ul>
 <li ng-repeat="arrayObject in names">{{arrayObject.name}}, {{arrayObject.age}}</li>
@@ -28,18 +28,26 @@
 </ul>
 -->
 
-<table style="width:100%" class="table table-hover">
+<br/>
+
+<!-- It works!!! -->
+<button ng-click = "changeClass3()" id = "grad" class = btn>Hide/Show ID</button><button ng-click = "changeClass2()" id = "grad" class = btn>Hide/Show Date</button><button ng-click="changeClass()" id = "grad" class = btn>Hide/Show Timestamp</button>
+
+<table style="width:100%" class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Timestamp</th>
-      <th>Date</th>
+      <th ng-class = "class3">ID</th>
+      <th ng-class = "class2">Date</th>
+      <th ng-class = "class">Timestamp</th>
     </tr>
   </thead>
     <a href = "#"><tr ng-repeat="otherArrayObject in things">
-      <td>{{otherArrayObject.ids}}</td>
-      <td>{{otherArrayObject.timestamps}}</td>
-      <td><mydate>{{otherArrayObject.timestamps*1000 | date: 'medium'}}</mydate></td> 
+      <td ng-class = "class3">{{otherArrayObject.ids}}</td>
+      <td ng-class = "class2"><mydate>{{otherArrayObject.timestamps*1000 | date: 'medium'}}</mydate></td>
+      <td ng-class = "class">{{otherArrayObject.timestamps}}</td> <!-- It half works! It hides! -->
+      
+      <!-- Make the table look nicer. Try to display just the ID, then click another thing to show the timestamp/date. Bootstrap widgets!? -->
+      <!-- So I'm trying to make a button toggle the timestamps column. The unconverted ones. -->
     </tr></a>
   
 </table>
